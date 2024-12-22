@@ -35,7 +35,10 @@
 
 12.15已经新增任务于[lstm文件](./lstm.ipynb),见文档的最后一个cell
 ### transformer
+2024.12.22 新增准备文件
 ### 其他预训练模型？
+GPT2(small)尝试，取最后一个logits再连接一个一个二分头
+需要hugging face 库 `pip3 install transformer`
 ## 模型训练
 可阅读[这一篇](./单轮训练的基本操作.md)
 
