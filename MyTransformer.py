@@ -97,7 +97,7 @@ class PositionalEncoding(nn.Module):
         self.P = torch.zeros((1, max_len, num_hiddens))
         X = torch.arange(max_len, dtype=torch.float32).reshape(
             -1, 1) / torch.pow(10000, torch.arange(
-            0, num_hiddens, 2, dtype=torch.float32) / num_hiddens)
+            0, num_hiddens, 2, dtype=torch.float32) / num_hiddens)#X.shape (maxlen,num_hidden//2)
         self.P[:, :, 0::2] = torch.sin(X)
         self.P[:, :, 1::2] = torch.cos(X)
 
@@ -169,7 +169,7 @@ class TransformerEncoder(EncoderDecoder.Encoder):
                              norm_shape, ffn_num_input, ffn_num_hiddens,
                              num_heads, dropout, use_bias))
 
-    def forward(self, X, valid_lens, *args):
+    def forward(self, X, valid_lens=None, *args):
         # 因为位置编码值在-1和1之间，
         # 因此嵌入值乘以嵌入维度的平方根进行缩放，
         # 然后再与位置编码相加。
@@ -227,17 +227,7 @@ class DecoderBlock(nn.Module):
         Z = self.addnorm2(Y, Y2)
         return self.addnorm3(Z, self.ffn(Z)), state
     
-class AttentionDecoder(EncoderDecoder.Decoder):
-    """带有注意力机制解码器的基本接口
-
-    Defined in :numref:`sec_seq2seq_attention`"""
-    def __init__(self, **kwargs):
-        super(AttentionDecoder, self).__init__(**kwargs)
-
-    @property
-    def attention_weights(self):
-        raise NotImplementedError
-class TransformerDecoder(AttentionDecoder):
+class TransformerDecoder(EncoderDecoder.Decoder):
     def __init__(self, vocab_size, key_size, query_size, value_size,
                  num_hiddens, norm_shape, ffn_num_input, ffn_num_hiddens,
                  num_heads, num_layers, dropout, **kwargs):
@@ -254,7 +244,7 @@ class TransformerDecoder(AttentionDecoder):
                              num_heads, dropout, i))
         self.dense = nn.Linear(num_hiddens, vocab_size)
 
-    def init_state(self, enc_outputs, enc_valid_lens, *args):
+    def init_state(self, enc_outputs, enc_valid_lens=None, *args):
         return [enc_outputs, enc_valid_lens, [None] * self.num_layers]
 
     def forward(self, X, state):
