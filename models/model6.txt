@@ -1,0 +1,8 @@
+只有最大池化，取消xavier初始化和梯度裁剪
+accuracy = 0.7759999632835388
+epoch1,batch100,loss = 0.6819999814033508
+epoch1,batch200,loss = 0.6952003836631775
+epoch1,batch300,loss = 0.3987102508544922
+epoch1,batch400,loss = 0.5148943066596985
+epoch1,batch500,loss = 0.49547484517097473
+epoch1,batch600,loss = 0.4685063362121582

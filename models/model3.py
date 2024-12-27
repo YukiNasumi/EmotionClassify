@@ -32,7 +32,6 @@ if __name__ == '__main__':
     vocab = data_process.gen_vocab(data)
     data_train  =  data_process.gen_dataset(data[:40000],vocab)
     data_test = data_process.gen_dataset(data[40000:],vocab)
-    #ramdom_data_test = data_process.gen_dataset(tools.select(data[40000:],500),vocab)
     Batch_size = 64
     train_iter = torch.utils.data.DataLoader(data_train,Batch_size,shuffle=True)
     test_iter = torch.utils.data.DataLoader(data_test,Batch_size,shuffle=True)
@@ -50,13 +49,12 @@ if __name__ == '__main__':
 
     optimizer = torch.optim.Adam(net.parameters(),lr,weight_decay=0.01)
 
-    logs = tools.train(net,train_iter,device,optimizer,torch.nn.CrossEntropyLoss(),epoch=num_epochs,test_iter=test_iter)
+    logs = tools.train(net,train_iter,device,optimizer,torch.nn.CrossEntropyLoss(),epoch=num_epochs)
 
     accuracy=tools.test(net,test_iter,device)
 
     torch.save(net.state_dict(),'models/'+name+'.pth')
     with open('models/'+name+'.txt','w') as f:
-        f.write(f'accuracy = {accuracy}\n')
         for log in logs:
             f.write(log+'\n')
     torch.cuda.empty_cache()
