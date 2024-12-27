@@ -25,37 +25,44 @@ class Vocab:  #@save
         # 未知词元的索引为0
         self.idx_to_token = ['<unk>'] + reserved_tokens #此attribute把索引映射为字符串，用列表实现
         self.token_to_idx = {token: idx
-                             for idx, token in enumerate(self.idx_to_token)} # 此dict把字符串映射为索引，注意enumerate从零开始计数
-        # i = 0
-        # print(type(self._token_freqs))
+                             for idx, token in enumerate(self.idx_to_token)}  # 此dict把字符串映射为索引，注意enumerate从零开始计数
+        
         for token, freq in self._token_freqs:
             if freq < min_freq:
                 break
-            if token not in self.token_to_idx:# 此句是为了防止_token_freqs里的词和reserved_tokens重复
+            if token not in self.token_to_idx:  # 防止特殊词元与其他词元重复
                 self.idx_to_token.append(token)
-                ''' if i < 10:
-                    i = i+1
-                    print(token)'''
-                self.token_to_idx[token] = len(self.idx_to_token) - 1 # 尾部分词的索引
+                self.token_to_idx[token] = len(self.idx_to_token) - 1
 
-    # __function允许以运算符的方式调用class 的 method
     def __len__(self):
-        return len(self.idx_to_token)   
+        return len(self.idx_to_token)
 
-    def __getitem__(self, tokens):#这个功能把输入语料映射为数字索引
-        # 在tokens为单独的词时停止递归
+    def __getitem__(self, tokens):
         if not isinstance(tokens, (list, tuple)):
-            return self.token_to_idx.get(tokens, self.unk)# 如果找不到就返回self.unk， .get()不会引发keyerror异常
-        return [self.__getitem__(token) for token in tokens] # 递归，返回的索引列表形状和传入列表形状相同
+            return self.token_to_idx.get(tokens, self.unk)
+        return [self.__getitem__(token) for token in tokens]
 
     def to_tokens(self, indices):
         if not isinstance(indices, (list, tuple)):
             return self.idx_to_token[indices]
         return [self.idx_to_token[index] for index in indices]
 
-    @property  # 只传self的方法可以@property变成一个attribute
-    def unk(self):  # 未知词元的索引为0
-        return 0
+    @property
+    def unk(self):
+        return 0  # '<unk>' 的索引为0
+
+    @property
+    def pad(self):
+        return self.token_to_idx.get('<pad>',0)  # 返回 '<pad>' 的索引
+
+    @property
+    def bos(self):
+        return self.token_to_idx.get('<bos>',0)  # 返回 '<bos>' 的索引
+
+    @property
+    def eos(self):
+        return self.token_to_idx.get('<eos>',0)  # 返回 '<eos>' 的索引
+
 
 
 def count_corpus(tokens):  #@save
