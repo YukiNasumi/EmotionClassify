@@ -38,7 +38,7 @@ if __name__ == '__main__':
     test_iter = torch.utils.data.DataLoader(data_test,Batch_size,shuffle=True)
 
     num_hiddens, num_layers, dropout =  768, 12, 0.1#num_hidden 其实是embedding_size或者说embedding_dim
-    lr, num_epochs, device = 2e-5, 1, tools.try_gpu()
+    lr, num_epochs, device = 2e-5, 50, tools.try_gpu()
     key_size=query_size=value_size=ffn_num_input=norm_shape=num_hiddens
     ffn_num_hiddens, num_heads =  64,12
 

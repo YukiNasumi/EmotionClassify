@@ -3,7 +3,7 @@ from tqdm import tqdm
 import seq2seq
 import random
 def train(net,train_iter,device,optimizer,criterion,epoch=1,test_iter=None):
-    xavier_init(net)
+#    xavier_init(net)
     net.train()
     net.to(device)
     min_accu = 0.5
@@ -18,7 +18,7 @@ def train(net,train_iter,device,optimizer,criterion,epoch=1,test_iter=None):
             y_hat = net(X)
             loss = criterion(y_hat,y)
             loss.backward()
-#            seq2seq.grad_clipping(net,1)
+            seq2seq.grad_clipping(net,1)
             if (i+1)%100 == 0:
                 log = f'epoch{j+1},batch{i+1},loss = {loss.item()}'
                 logs.append(log)
