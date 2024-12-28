@@ -8,7 +8,7 @@ from torch.nn.utils.rnn import pad_sequence
 def gen_vocab(data):
     lines = [l for l in data['review']]
     lines = list(map(word_tokenize,lines))
-    corpus = [word  for l in lines for word in l]# ÓïÁÏ¿â
+    corpus = [word  for l in lines for word in l]# è¯­æ–™åº“
     return vocab.Vocab(corpus)
 
 
@@ -19,7 +19,7 @@ class emotionDataset(Dataset):
         self.review = [ s.split()[:max_len] for s in data['review']]#truncnate
         self.val_len = [len(s.split()) if len(s.split())<=max_len else max_len for s in data['review']]
         #print(torch.tensor(vocab[self.review])[0])
-        self.tokens =  pad_sequence([torch.tensor(token) for token in vocab[self.review]],batch_first=True,padding_value=0)# ½«Ã¿¸ö¾ä×Ó±àÂëºóÌî³ä
+        self.tokens =  pad_sequence([torch.tensor(token) for token in vocab[self.review]],batch_first=True,padding_value=0)# å°†æ¯ä¸ªå¥å­ç¼–ç åŽå¡«å……
         self.label = [label for label in data['label']]
         self.max_len = max_len
     
