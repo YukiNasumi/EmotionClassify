@@ -1,4 +1,4 @@
-最大池化+梯度裁剪
+最大池化+梯度裁剪 batch=64 model=myBERT
 accuracy = 0.7586999535560608
 epoch1,batch100,loss = 0.6730904579162598
 epoch1,batch200,loss = 0.6994462609291077

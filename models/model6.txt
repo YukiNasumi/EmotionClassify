@@ -1,4 +1,4 @@
-只有最大池化，取消xavier初始化和梯度裁剪
+只有最大池化，取消xavier初始化和梯度裁剪 batch_size = 64,model=myBERT
 accuracy = 0.7759999632835388
 epoch1,batch100,loss = 0.6819999814033508
 epoch1,batch200,loss = 0.6952003836631775

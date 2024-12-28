@@ -1,3 +1,4 @@
+使用预训练的BERT模型
 accuracy = 0.9175
 Epoch 1, Loss: 0.2891
 Epoch 2, Loss: 0.1699

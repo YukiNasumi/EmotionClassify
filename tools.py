@@ -2,48 +2,72 @@ import torch
 from tqdm import tqdm
 import seq2seq
 import random
-def train(net,train_iter,device,optimizer,criterion,epoch=1,test_iter=None):
+def train(net,train_iter,device,optimizer,criterion,epoch=1,test_iter=None,use_mask=False):
 #    xavier_init(net)
     net.train()
     net.to(device)
     min_accu = 0.5
     logs=[]
     for j in range(epoch):
-        for i,(X,y) in tqdm(enumerate(train_iter),total=len(train_iter)):
-            X = X.to(device)
-            
-            y = y.to(device)
-            
-            optimizer.zero_grad()
-            y_hat = net(X)
-            loss = criterion(y_hat,y)
-            loss.backward()
-            seq2seq.grad_clipping(net,1)
-            if (i+1)%100 == 0:
-                log = f'epoch{j+1},batch{i+1},loss = {loss.item()}'
-                logs.append(log)
-            optimizer.step()
+        if not use_mask:
+            for i,(X,y) in tqdm(enumerate(train_iter),total=len(train_iter)):
+                X = X.to(device)
+                
+                y = y.to(device)
+                
+                optimizer.zero_grad()
+                y_hat = net(X)
+                loss = criterion(y_hat,y)
+                loss.backward()
+                seq2seq.grad_clipping(net,1)
+                if (i+1)%100 == 0:
+                    log = f'epoch{j+1},batch{i+1},loss = {loss.item()}'
+                    logs.append(log)
+                optimizer.step()
+        else:
+            for i,(Xs,y) in tqdm(enumerate(train_iter),total=len(train_iter)):
+                X,valid_len = [x.to(device) for x in Xs]
+                
+                y = y.to(device)
+                
+                optimizer.zero_grad()
+                y_hat = net(X,valid_len)
+                loss = criterion(y_hat,y)
+                loss.backward()
+                seq2seq.grad_clipping(net,1)
+                if (i+1)%100 == 0:
+                    log = f'epoch{j+1},batch{i+1},loss = {loss.item()}'
+                    logs.append(log)
+                optimizer.step()
         if test_iter:
             net.eval()
-            accuracy = test(net,test_iter,device)
+            accuracy = test(net,test_iter,device,use_mask=use_mask)
             if accuracy > min_accu:
                 torch.save(net.state_dict(),'./models/cache.pth')
-    net.load_state_dict(torch.load('models/cache.pth'))
+    if test_iter:
+        net.load_state_dict(torch.load('models/cache.pth'))
     return logs
         
-def test(net,test_iter,device):
+def test(net,test_iter,device,use_mask=False):
     net.eval()
     net.to(device)
     with torch.no_grad():
         tp = 0
         cnt = 0
-        for i,(X,y) in tqdm(enumerate(test_iter),total=len(test_iter)):
-            X = X.to(device)
-            y = y.to(device)
-            y_hat = net(X)
-            tp += (y==y_hat.argmax(dim=1)).sum()
-            cnt += y.shape[0]
-            
+        if not use_mask:
+            for i,(X,y) in tqdm(enumerate(test_iter),total=len(test_iter)):
+                X = X.to(device)
+                y = y.to(device)
+                y_hat = net(X)
+                tp += (y==y_hat.argmax(dim=1)).sum()
+                cnt += y.shape[0]
+        else:
+            for i,(Xs,y) in tqdm(enumerate(test_iter),total=len(test_iter)):
+                (X,valid_len) = [x.to(device) for x in Xs]
+                y = y.to(device)
+                y_hat = net(X,valid_len)
+                tp += (y==y_hat.argmax(dim=1)).sum()
+                cnt += y.shape[0]
     print(f'accuracy = {tp/cnt}')
     return tp/cnt
 
