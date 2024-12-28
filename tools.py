@@ -66,7 +66,7 @@ def test(net,test_iter,device,use_mask=False):
                 (X,valid_len) = [x.to(device) for x in Xs]
                 y = y.to(device)
                 y_hat = net(X,valid_len)
-                tp += (y==y_hat.argmax(dim=1)).sum()
+                tp += (y==y_hat.argmax(dim=1)).sum().item()
                 cnt += y.shape[0]
     print(f'accuracy = {tp/cnt}')
     return tp/cnt
