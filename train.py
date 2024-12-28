@@ -9,9 +9,9 @@ from NN import *
 
 
 '''Public Hyper Parameters'''
-Batch_size = 8
+Batch_size = 4
 use_mask = False
-num_epochs = 1
+num_epochs = 4
 model = 2
 device = tools.try_gpu()
 if __name__ == '__main__':
@@ -50,7 +50,7 @@ if __name__ == '__main__':
                    hidden_size=256,device=device,use_mask=use_mask)
         optimizer = torch.optim.SGD(net.parameters(),lr)
     logs = tools.train(net,train_iter,device,optimizer,torch.nn.CrossEntropyLoss(),
-                       epoch=num_epochs,test_iter=None,use_mask=use_mask)
+                       epoch=num_epochs,test_iter=test_iter,use_mask=use_mask)
 
     accuracy=tools.test(net,test_iter,device,use_mask=use_mask)
 

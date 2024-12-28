@@ -1,0 +1,8 @@
+batch_size=64,model=lstm,其他参数与12一样
+accuracy = 0.7770999670028687
+epoch1,batch100,loss = 0.8601963520050049
+epoch1,batch200,loss = 0.6691136360168457
+epoch1,batch300,loss = 0.6251065135002136
+epoch1,batch400,loss = 0.5262541770935059
+epoch1,batch500,loss = 0.5117220282554626
+epoch1,batch600,loss = 0.44703298807144165

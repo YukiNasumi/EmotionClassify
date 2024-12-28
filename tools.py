@@ -9,6 +9,7 @@ def train(net,train_iter,device,optimizer,criterion,epoch=1,test_iter=None,use_m
     min_accu = 0.5
     logs=[]
     for j in range(epoch):
+        net.train()
         if not use_mask:
             for i,(X,y) in tqdm(enumerate(train_iter),total=len(train_iter)):
                 X = X.to(device)
