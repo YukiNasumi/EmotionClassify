@@ -1,3 +1,4 @@
+mybert num_epochs=50，取最后一个时间步的状态
 epoch48,batch300,loss = 0.15180471539497375                                                                    
 epoch48,batch400,loss = 0.24046704173088074                                                                    
 epoch48,batch500,loss = 0.21012526750564575                                                                    
