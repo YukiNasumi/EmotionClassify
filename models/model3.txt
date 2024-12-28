@@ -1,4 +1,4 @@
-采用最大池化
+myBERT采用最大池化
 accuracy = 0.7775999903678894
 epoch1,batch100,loss = 0.6973399519920349
 epoch1,batch200,loss = 0.4832768738269806
