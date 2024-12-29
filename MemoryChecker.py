@@ -1,7 +1,7 @@
 import os
 import time
 import torch
-
+from datetime import datetime
 THRESHOLD = 40000  
 
 # 要启动的 Python 脚本路径
@@ -22,27 +22,36 @@ def check_free_memory():
 
 # 启动目标脚本的函数
 def launch_script():
-    print(f"显存充足，启动脚本: {TARGET_SCRIPT}")
     os.system(f"python {TARGET_SCRIPT} --name model17")
 
 if __name__ == "__main__":
-    #time.sleep(1800)
+    current_time = datetime.now().strftime("%H:%M")
+    while current_time <= '17:00':
+        current_time = datetime.now().strftime("%H:%M")
+        time.sleep(3600)
     for _ in range(4):
         
         if check_free_memory():
             flag=True
-            for _ in range(5):
-                print('显存暂时充足，接下来每隔3分钟检查一次，共检查5次，确认显卡空闲再运行任务')
+            current_time = datetime.now().strftime("%H:%M")
+            print(f'UTC {current_time},显存暂时充足，接下来每隔3分钟检查一次，共检查5次，确认显卡空闲再运行任务')
+            for i in range(5):
                 time.sleep(180)
                 flag = check_free_memory()
                 if not flag:
                     break
+                current_time = datetime.now().strftime("%H:%M")
+                print(f'UTC {current_time},第{i+1}次检查可用')
             if flag:
                 start = time.time()
+                current_time = datetime.now().strftime("%H:%M")
+                print(f'UTC {current_time},显存充足,执行任务')
                 launch_script()
                 end = time.time()
-                print(f'执行完成，退出程序,本次任务耗时{end-start:.4f}s')
+                current_time = datetime.now().strftime("%H:%M")
+                print(f'UTC {current_time} 执行完成，退出程序,本次任务耗时{end-start:.4f}s')
                 break
         else:
-            print("显存不足，继续等待...")
+            current_time = datetime.now().strftime("%H:%M")
+            print(f"UTC {current_time} 显存不足，继续等待...")
         time.sleep(1800)
