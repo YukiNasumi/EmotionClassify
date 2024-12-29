@@ -3,7 +3,7 @@ from torch import nn
 import tools
 import pandas
 import data_process
-
+import os
 import argparse
 from NN import *
 
@@ -55,6 +55,7 @@ if __name__ == '__main__':
     accuracy=tools.test(net,test_iter,device,use_mask=use_mask)
 
     torch.save(net.state_dict(),'models/'+name+'.pth')
+    os.system(f'cp train.py models/{name}.py')#保存训练代码
     with open('models/'+name+'.txt','w') as f:
         f.write(f'accuracy = {accuracy}\n')
         for log in logs:

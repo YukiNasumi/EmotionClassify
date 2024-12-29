@@ -56,7 +56,7 @@ if __name__ == '__main__':
 
     # 7. 训练过程
     logs = []
-    epochs = 3
+    epochs = 40
     for epoch in range(epochs):
         model.train()
         total_loss = 0

@@ -1,4 +1,4 @@
-batch_size=50 epoch = 50,model=myBERT，最大池化+梯度裁剪 多批次训练，选择测试最好的参数
+batch_size=64 epoch = 50,model=myBERT，最大池化+梯度裁剪 多批次训练，选择测试最好的参数
 accuracy = 0.8054999709129333
 epoch1,batch100,loss = 0.6976686716079712
 epoch1,batch200,loss = 0.6002609729766846
