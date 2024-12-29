@@ -2,12 +2,14 @@ import torch
 from tqdm import tqdm
 import seq2seq
 import random
-def train(net,train_iter,device,optimizer,criterion,epoch=1,test_iter=None,use_mask=False):
+def train(net,train_iter,device,optimizer,criterion,
+          epoch=1,test_iter=None,use_mask=False,early_stop=False):
 #    xavier_init(net)
     net.train()
     net.to(device)
     min_accu = 0.5
     logs=[]
+    last_loss = 10
     for j in range(epoch):
         net.train()
         if not use_mask:
@@ -19,13 +21,22 @@ def train(net,train_iter,device,optimizer,criterion,epoch=1,test_iter=None,use_m
                 optimizer.zero_grad()
                 y_hat = net(X)
                 loss = criterion(y_hat,y)
+                optim = last_loss - loss.item()
+                
                 loss.backward()
                 seq2seq.grad_clipping(net,1)
                 if (i+1)%100 == 0:
                     log = f'epoch{j+1},batch{i+1},loss = {loss.item()}'
                     logs.append(log)
+                    if early_stop:
+                        if optim < -0.3:##反向优化太大则早停,注意在optimizer优化之前停止
+                            logs.append('early_stop,ignore the last loss')
+                            net.load_state_dict(torch.load('models/cache.pth'))
+                            return logs
+                        else:
+                            torch.save(net.state_dict(),'./models/cache.pth')
                 optimizer.step()
-        else:
+        else:##这是被证明没有用的mask
             for i,(Xs,y) in tqdm(enumerate(train_iter),total=len(train_iter)):
                 X,valid_len = [x.to(device) for x in Xs]
                 
