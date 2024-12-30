@@ -59,7 +59,8 @@ def test(net,test_iter,device):
     return tp/cnt
 
 device = tools.try_gpu()
-
+num_epochs = 20
+batch_size = 64
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--name',type=str,required=True)
@@ -69,7 +70,7 @@ if __name__ == '__main__':
     train_texts, train_labels = list([' '.join(s.split()[:1024]) for s in  data[:40000]['review']]),list(data[:40000]['label'])
     test_texts, test_labels = list([' '.join(s.split()[:1024]) for s in data[40000:]['review']]),list(data[40000:]['label'])
 
-    batch_size = 32
+    
     train_dataset = IMDBdataest(train_texts, train_labels)
     test_dataset = IMDBdataest(test_texts, test_labels)
 
@@ -79,11 +80,11 @@ if __name__ == '__main__':
     model = GPT2ForSequenceClassification.from_pretrained("gpt2", num_labels=2)
     model.config.pad_token_id = train_dataset.tokenizer.pad_token_id
 
-    logs = train(model,train_loader,device,num_epochs=1,lr=2e-5)
-    
+    logs = train(model,train_loader,device,num_epochs=num_epochs,lr=2e-5)
+    torch.save(model.state_dict(),'models/'+name+'.pth')
     accuracy = test(model,test_loader,device)
     
-    torch.save(model.state_dict(),'models/'+name+'.pth')
+    
     with open('models/'+name+'.txt','w') as f:
         f.write(f'accuracy = {accuracy}\n')
         for log in logs:

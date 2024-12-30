@@ -12,7 +12,7 @@ from NN import *
 Batch_size = 64
 use_mask = True
 num_epochs = 50
-model = None
+model = 1
 device = tools.try_gpu()
 model_path = None#'models/model18.pth'
 use_test_select = False

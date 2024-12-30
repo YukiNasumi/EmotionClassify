@@ -18,7 +18,7 @@ class IMDbDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         return {key: val[idx] for key, val in self.encodings.items()}, torch.tensor(self.labels[idx])
 
-epochs = 1
+epochs = 20
 batch_size = 64
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
