@@ -3,6 +3,8 @@ import torch
 from torch.utils.data import Dataset,DataLoader
 import pandas
 from tqdm import tqdm
+import tools
+import argparse
 
 class IMDBdataest(Dataset):
     def __init__(self,texts,labels):
@@ -46,17 +48,23 @@ def test(net,test_iter,device):
     with torch.no_grad():
         tp = 0
         cnt = 0
-        for (X,atten),y in test_iter:
+        for (X,atten),y in tqdm(test_iter):
             X = X.to(device)
             atten = atten.to(device)
             y = y.to(device)
-            y_hat = net(input_ids=X, attention_mask=atten)
+            y_hat = net(input_ids=X, attention_mask=atten).logits
             tp += (y==y_hat.argmax(dim=1)).sum()
             cnt += y.shape[0]
     print(f'accuracy = {tp/cnt}')
     return tp/cnt
 
+device = tools.try_gpu()
+
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--name',type=str,required=True)
+    args = parser.parse_args()
+    name = args.name
     data  = pandas.read_csv('./motionClassify.csv')
     train_texts, train_labels = list([' '.join(s.split()[:1024]) for s in  data[:40000]['review']]),list(data[:40000]['label'])
     test_texts, test_labels = list([' '.join(s.split()[:1024]) for s in data[40000:]['review']]),list(data[40000:]['label'])
@@ -71,4 +79,12 @@ if __name__ == '__main__':
     model = GPT2ForSequenceClassification.from_pretrained("gpt2", num_labels=2)
     model.config.pad_token_id = train_dataset.tokenizer.pad_token_id
 
-    logs = train(model,train_loader,torch.device('cuda:0'),num_epochs=1,lr=2e-5)
+    logs = train(model,train_loader,device,num_epochs=1,lr=2e-5)
+    
+    accuracy = test(model,test_loader,device)
+    
+    torch.save(model.state_dict(),'models/'+name+'.pth')
+    with open('models/'+name+'.txt','w') as f:
+        f.write(f'accuracy = {accuracy}\n')
+        for log in logs:
+            f.write(log+'\n')

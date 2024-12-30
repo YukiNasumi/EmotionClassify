@@ -9,21 +9,23 @@ from NN import *
 
 
 '''Public Hyper Parameters'''
-Batch_size = 4
-use_mask = False
-num_epochs = 20
-model = 2
+Batch_size = 64
+use_mask = True
+num_epochs = 50
+model = None
 device = tools.try_gpu()
-model_path = 'models/model18.pth'
+model_path = None#'models/model18.pth'
 use_test_select = False
-early_stop = True
+early_stop = False
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--name',type=str,required=True)
-    parser.add_argument('--model',type=str,required=False,default=None)
+    parser.add_argument('--model_path',type=str,required=False,default=None)
+    parser.add_argument('--model',type=int,required=False,default=None)
     args = parser.parse_args()
     name = args.name
-    model_path = args.model if  model_path is None else model_path#有提前预设的就忽略命令行
+    model_path = args.model_path if  model_path is None else model_path#有提前预设的就忽略命令行
+    model = args.model if model is None else model
     torch.cuda.empty_cache()  # 释放未被引用的显存
     '''加载数据'''
     data  = pandas.read_csv('./motionClassify.csv')
