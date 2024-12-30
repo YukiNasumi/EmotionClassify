@@ -14,8 +14,10 @@
 最后，受到产业界微调训练方式(\ref{https://arxiv.org/pdf/2303.06135})的影响，本文尝试了多种预训练模型的微调。效果？
 
 **key words** RNN,LSTM,PrLMs,Transformer
-## Introduction
-略，各写各的,介绍一下为什么要这么做，为什么选择这个模型
+## Introduction(放到历史后面）
+写前置工作：
+1. [词表](../vocab.py)
+2. 词嵌入 nn.Embedding 介绍一下embedding，可以写很多，[参考](https://zhuanlan.zhihu.com/p/114538417)
 ## related work
 情感分类问题的研究
 1. 早期阶段（20世纪90年代中后期）
@@ -71,10 +73,16 @@
 ## 数据集和语料库
 IMDB数据集
 ## Experiment
-### 构建词表
 ### baseline模型：简单的全连接层
-### 循环神经网络
-介绍一下embedding，可以写很多，[参考](https://zhuanlan.zhihu.com/p/114538417)
+### 经典循环神经网络
+#### baseline rnn 50%
+#### lstm 
+accuracy-batch_size
+loss-batch_size
+A/B contrast : use_mask =True/False
+
+
+
 rnn 介绍参考[这一篇](https://zh.d2l.ai/chapter_recurrent-neural-networks/rnn.html)
 ### lstm
 ### TransformerEncoder
