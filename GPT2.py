@@ -40,6 +40,7 @@ def train(net,train_iter,device,num_epochs,lr):
                 log = f'epoch{epoch},batch{batch} loss={loss.item()}'
                 logs.append(log)
             optimzier.step()
+            batch+=1
     return logs
 
 def test(net,test_iter,device):
@@ -59,7 +60,7 @@ def test(net,test_iter,device):
     return tp/cnt
 
 device = tools.try_gpu()
-num_epochs = 20
+num_epochs = 10
 batch_size = 64
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

@@ -1,3 +1,5 @@
+batch_size = 4
+num_epochs = 20
 accuracy = 0.8910999894142151
 观察到loss在后期会波动，下一步要引入早停(early stop)机制
 epoch1,batch100,loss = 0.1397460699081421

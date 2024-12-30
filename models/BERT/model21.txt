@@ -1,0 +1,27 @@
+训练25个epochs，batch_size=64
+accuracy = 0.9181
+Epoch 1, Loss: 0.2913
+Epoch 2, Loss: 0.1663
+Epoch 3, Loss: 0.0975
+Epoch 4, Loss: 0.0559
+Epoch 5, Loss: 0.0347
+Epoch 6, Loss: 0.0244
+Epoch 7, Loss: 0.0198
+Epoch 8, Loss: 0.0167
+Epoch 9, Loss: 0.0148
+Epoch 10, Loss: 0.0141
+Epoch 11, Loss: 0.0099
+Epoch 12, Loss: 0.0100
+Epoch 13, Loss: 0.0097
+Epoch 14, Loss: 0.0093
+Epoch 15, Loss: 0.0070
+Epoch 16, Loss: 0.0084
+Epoch 17, Loss: 0.0073
+Epoch 18, Loss: 0.0059
+Epoch 19, Loss: 0.0084
+Epoch 20, Loss: 0.0058
+Epoch 21, Loss: 0.0067
+Epoch 22, Loss: 0.0062
+Epoch 23, Loss: 0.0045
+Epoch 24, Loss: 0.0042
+Epoch 25, Loss: 0.0060
