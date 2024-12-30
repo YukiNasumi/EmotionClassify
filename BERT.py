@@ -18,13 +18,15 @@ class IMDbDataset(torch.utils.data.Dataset):
     def __getitem__(self, idx):
         return {key: val[idx] for key, val in self.encodings.items()}, torch.tensor(self.labels[idx])
 
+epochs = 1
+batch_size = 64
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--name',type=str,required=True)
     args = parser.parse_args()
     name = args.name
 
-    batch_size = 64
+
     data  = pandas.read_csv('./motionClassify.csv')
     train_texts, train_labels = list(data[:40000]['review']),list(data[:40000]['label'])
     test_texts, test_labels = list(data[40000:]['review']),list(data[40000:]['label'])
@@ -56,7 +58,7 @@ if __name__ == '__main__':
 
     # 7. 训练过程
     logs = []
-    epochs = 40
+
     for epoch in range(epochs):
         model.train()
         total_loss = 0

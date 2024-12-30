@@ -3,9 +3,10 @@ from nltk.tokenize import word_tokenize
 import torch
 from torch.utils.data import Dataset,DataLoader
 from torch.nn.utils.rnn import pad_sequence
-
+import nltk
 
 def gen_vocab(data):
+    nltk.download('punkt_tab')
     lines = [l for l in data['review']]
     lines = list(map(word_tokenize,lines))
     corpus = [word  for l in lines for word in l]# 语料库
