@@ -1,0 +1,8 @@
+增加参数xavier初始化和裁剪梯度
+accuracy = 0.7094999551773071
+epoch1,batch100,loss = 0.6381015777587891
+epoch1,batch200,loss = 0.758303701877594
+epoch1,batch300,loss = 0.7460612058639526
+epoch1,batch400,loss = 0.5620139241218567
+epoch1,batch500,loss = 0.6500551104545593
+epoch1,batch600,loss = 0.6755316853523254

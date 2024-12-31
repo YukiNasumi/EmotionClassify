@@ -157,10 +157,10 @@ class TransformerEncoder(EncoderDecoder.Encoder):
     """Transformer编码器"""
     def __init__(self, vocab_size, key_size, query_size, value_size,
                  num_hiddens, norm_shape, ffn_num_input, ffn_num_hiddens,
-                 num_heads, num_layers, dropout, use_bias=False, **kwargs):
+                 num_heads, num_layers, dropout, use_bias=False,padding_idx=None, **kwargs):
         super(TransformerEncoder, self).__init__(**kwargs)
         self.num_hiddens = num_hiddens
-        self.embedding = nn.Embedding(vocab_size, num_hiddens)
+        self.embedding = nn.Embedding(vocab_size, num_hiddens,padding_idx=padding_idx)
         self.pos_encoding = PositionalEncoding(num_hiddens, dropout)
         self.blks = nn.Sequential()
         for i in range(num_layers):

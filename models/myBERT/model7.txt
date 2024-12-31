@@ -1,0 +1,8 @@
+最大池化的基础上加上xavier init,batch_size=64,model=myBERT
+accuracy = 0.7364000082015991
+epoch1,batch100,loss = 0.7365968823432922
+epoch1,batch200,loss = 0.4393734931945801
+epoch1,batch300,loss = 0.4086904525756836
+epoch1,batch400,loss = 0.5478954911231995
+epoch1,batch500,loss = 0.48412075638771057
+epoch1,batch600,loss = 0.45361220836639404
