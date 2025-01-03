@@ -1,12 +1,15 @@
-import torch
+import subprocess
 import time
 import matplotlib.pyplot as plt
 import argparse
 from datetime import datetime
 def used_Memory():
-    free_memory, total_memory = torch.cuda.mem_get_info(0)
-    free_memory = free_memory / 1024**2
-    total_memory = total_memory / 1024**2
+    result = subprocess.run(
+        ['nvidia-smi', '--query-gpu=memory.free', '--format=csv,nounits,noheader'],
+        stdout=subprocess.PIPE,
+        text=True
+    )
+    free_memory = float(result.stdout.strip()) / 1024  # 转换为 GB
     return free_memory
 def CurrentTime():
     return datetime.now().strftime("%H:%M")
@@ -22,14 +25,14 @@ if __name__ == '__main__':
     log = []
     xticks = list(range(period))
     xticks_labels = []
-    for _ in xticks:
+    for i in range(int(period*(3600/gap))):
         current_memory = used_Memory()
         log.append(current_memory)
         xticks_labels.append(CurrentTime())
+        plt.plot(xticks[:i+1],log[:i+1],'o-')
+        plt.xlabel('Time')
+        plt.ylabel('Used Memory')
+        plt.xticks(xticks[:i+1],xticks_labels[:i+1])
+        plt.grid()
+        plt.savefig(f'{imgpath}.png')
         time.sleep(gap)
-    plt.plot(xticks,log,'-')
-    plt.xlabel('Time')
-    plt.ylabel('Used Memory')
-    plt.xticks(xticks,xticks_labels)
-    plt.grid()
-    plt.savefig(f'{imgpath}.png')
